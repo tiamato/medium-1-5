@@ -73,7 +73,7 @@ namespace Rollback
         {
             if (!UndoCommandName.Equals(Name))
             {
-                throw new ArgumentException($"Имя команды не соответствует ее типу - имя: {Name}, тип: {typeof(UndoCommand)}!");
+                throw new ArgumentException($"Имя команды не соответствует ее типу - имя: {Name}, тип: {nameof(UndoCommand)}!");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Rollback
         {
             if (UndoCommandName.Equals(Name))
             {
-                throw new ArgumentException($"Имя команды не соответствует ее типу - имя: {Name}, тип: {typeof(RegularCommand)}! ");
+                throw new ArgumentException($"Имя команды не соответствует ее типу - имя: {Name}, тип: {nameof(RegularCommand)}! ");
             }
         }
 
