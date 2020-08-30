@@ -6,22 +6,13 @@ namespace Rollback
     {
         private readonly CommandStorage _commandStorage;
 
-        public ConsoleView(CommandStorage commandStorage, CommandController commandController)
+        public ConsoleView(CommandStorage commandStorage, InputLoop inputLoop)
         {
             _commandStorage = commandStorage;
             _commandStorage.OnStorageUpdated += PrintCommands;
             _commandStorage.OnError += PrintError;
 
-            commandController.OnGetCommand += InputCommand;
-        }
-
-        private void InputCommand()
-        {
-            Console.Write("Введите команду: ");
-            var commandName = Console.ReadLine();
-            Console.WriteLine();
-
-            _commandStorage.CreateAndExecuteCommand(commandName);
+            inputLoop.OnGetCommand += InputCommand;
         }
 
         private static void PrintCommand(Command command)
@@ -38,6 +29,15 @@ namespace Rollback
         {
             Console.WriteLine(error);
             Console.WriteLine();
+        }
+
+        private void InputCommand()
+        {
+            Console.Write("Введите команду: ");
+            var commandName = Console.ReadLine();
+            Console.WriteLine();
+
+            _commandStorage.CreateAndExecuteCommand(commandName);
         }
 
         private void PrintCommands()

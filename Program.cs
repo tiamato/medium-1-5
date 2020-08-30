@@ -5,9 +5,9 @@
         private static void Main()
         {
             var storage = new CommandStorage();
-            var storageController = new CommandController(storage);
+            var inputLoop = new InputLoop(storage);
 
-            storageController.StartConsoleInput();
+            inputLoop.StartConsoleInput();
         }
     }
 }

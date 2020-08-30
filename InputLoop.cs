@@ -2,13 +2,13 @@
 
 namespace Rollback
 {
-    public class CommandController
+    public class InputLoop
     {
         private readonly CommandStorage _commandStorage;
 
         public event Action OnGetCommand;
 
-        public CommandController(CommandStorage commandStorage)
+        public InputLoop(CommandStorage commandStorage)
         {
             _commandStorage = commandStorage;
         }

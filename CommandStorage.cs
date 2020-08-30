@@ -7,13 +7,13 @@ namespace Rollback
     {
         private readonly List<Command> _items = new List<Command>();
 
+        public event Action OnStorageUpdated;
+        public event EventHandler<ErrorEventArgs> OnError;
+
         public IEnumerable<Command> GetItems()
         {
             return _items;
         }
-
-        public event Action OnStorageUpdated;
-        public event EventHandler<ErrorEventArgs> OnError;
 
         public void CreateAndExecuteCommand(string commandName)
         {
