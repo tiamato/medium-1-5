@@ -5,15 +5,12 @@ namespace Rollback
 {
     public class CommandStorage
     {
-        private readonly List<Command> _items = new List<Command>();
+        private readonly Stack<Command> _items = new Stack<Command>();
 
         public event Action OnStorageUpdated;
         public event EventHandler<ErrorEventArgs> OnError;
 
-        public IEnumerable<Command> GetItems()
-        {
-            return _items;
-        }
+        public IEnumerable<Command> Items() => _items;
 
         public void CreateAndExecuteCommand(string commandName)
         {
@@ -24,10 +21,6 @@ namespace Rollback
                     var command = Command.CreateInstance(commandName);
                     command.Execute(_items);
                 }
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                OnError?.Invoke(this, new ErrorEventArgs("Команд для отмены нет! Повторите попытку"));
             }
             catch (ArgumentException exception)
             {
@@ -64,7 +57,7 @@ namespace Rollback
             return new RegularCommand(name);
         }
 
-        public abstract void Execute(List<Command> items);
+        public abstract void Execute(Stack<Command> items);
     }
 
     public class UndoCommand : Command
@@ -77,9 +70,16 @@ namespace Rollback
             }
         }
 
-        public override void Execute(List<Command> items)
+        public override void Execute(Stack<Command> items)
         {
-            items.RemoveAt(items.Count - 1);
+            try
+            {
+                items.Pop();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException("Команд для отмены нет!");
+            }
         }
     }
 
@@ -93,9 +93,9 @@ namespace Rollback
             }
         }
 
-        public override void Execute(List<Command> items)
+        public override void Execute(Stack<Command> items)
         {
-            items.Add(this);
+            items.Push(this);
         }
     }
 
