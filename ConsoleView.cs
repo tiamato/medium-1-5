@@ -44,7 +44,7 @@ namespace Rollback
         {
             Console.WriteLine("Список команд:");
             Console.WriteLine("-------------");
-            foreach (var command in _commandStorage.GetItems())
+            foreach (var command in _commandStorage.Items())
             {
                 PrintCommand(command);
             }
