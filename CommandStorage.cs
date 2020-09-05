@@ -7,6 +7,8 @@ namespace Rollback
     {
         private readonly Stack<Command> _items = new Stack<Command>();
 
+        public bool IsEmpty => _items.Count == 0;
+
         public event Action OnStorageUpdated;
         public event EventHandler<ErrorEventArgs> OnError;
 
@@ -36,7 +38,7 @@ namespace Rollback
         protected const string UndoCommandName = "undo";
         private const string EmptyCommandName = "";
 
-        public readonly string Name;
+        protected readonly string Name;
 
         protected Command(string name)
         {
@@ -45,6 +47,11 @@ namespace Rollback
                 throw new ArgumentException("Введена пустая команда!");
             }
             Name = name;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         public static Command CreateInstance(string name)

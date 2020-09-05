@@ -15,11 +15,6 @@ namespace Rollback
             inputLoop.OnGetCommand += InputCommand;
         }
 
-        private static void PrintCommand(Command command)
-        {
-            Console.WriteLine(command.Name);
-        }
-
         private static void PrintError(object sender, ErrorEventArgs eventArgs)
         {
             PrintError(eventArgs.Error);
@@ -42,13 +37,19 @@ namespace Rollback
 
         private void PrintCommands()
         {
-            Console.WriteLine("Список команд:");
-            Console.WriteLine("-------------");
-            foreach (var command in _commandStorage.Items())
+            if (_commandStorage.IsEmpty)
             {
-                PrintCommand(command);
+                Console.WriteLine("Стек команд пуст!");
             }
-            Console.WriteLine("-------------");
+            else
+            {
+                Console.WriteLine("Список команд в стеке:");
+                foreach (var command in _commandStorage.Items())
+                {
+                    Console.WriteLine(command);
+                }
+                Console.WriteLine("-- (конец списка)");
+            }
             Console.WriteLine();
         }
     }
