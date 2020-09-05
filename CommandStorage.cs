@@ -7,12 +7,11 @@ namespace Rollback
     {
         private readonly Stack<Command> _items = new Stack<Command>();
 
-        public bool IsEmpty => _items.Count == 0;
-
         public event Action OnStorageUpdated;
         public event EventHandler<ErrorEventArgs> OnError;
 
-        public IEnumerable<Command> Items() => _items;
+        public bool IsEmpty => _items.Count == 0;
+        public IEnumerable<Command> Items => _items;
 
         public void CreateAndExecuteCommand(string commandName)
         {
@@ -49,11 +48,6 @@ namespace Rollback
             Name = name;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
         public static Command CreateInstance(string name)
         {
             if (UndoCommandName.Equals(name))
@@ -65,6 +59,11 @@ namespace Rollback
         }
 
         public abstract void Execute(Stack<Command> items);
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public class UndoCommand : Command
@@ -108,11 +107,11 @@ namespace Rollback
 
     public class ErrorEventArgs : EventArgs
     {
-        public string Error { get; }
-
         public ErrorEventArgs(string error)
         {
             Error = error;
         }
+
+        public string Error { get; }
     }
 }
